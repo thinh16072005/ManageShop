@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 
 public class FruitManager {
-    private ArrayList<Fruit> fruitList;
+    private final ArrayList<Fruit> fruitList;
     
     public ArrayList<Fruit> getFruitList() {return fruitList;}
     

@@ -55,6 +55,20 @@ public class Validation {
             }
         }
     }
+
+    public static String getAndValidateOrigin() {
+        while (true) {
+            try {
+                String result = sc.nextLine().trim();
+                if (result.isEmpty()) {
+                    throw new Exception("Input must not be empty!");
+                }
+            }
+            catch (Exception e) {
+                System.out.println("Input must be String. Please input again.");
+            }
+        }
+    }
     
     public static boolean checkID(ArrayList<Fruit> fr, String id) {
         for (Fruit fruit : fr) {
@@ -67,17 +81,19 @@ public class Validation {
 
     public static boolean continueConfirm(String msg) {
         while (true) {
-            String result = getAndValidValue();
+            try {
+                if (msg.equalsIgnoreCase("Y")) {
+                    return true;
+                }
+                //return false if user input n/N
+                if (msg.equalsIgnoreCase("N")) {
+                    return false;
+                }
+            }
+            catch (Exception e) {
+                System.out.println("Please input y/Y or n/N.");
+            }
             //return true if user input y/Y
-            if (result.equalsIgnoreCase("Y")) {
-                return true;
-            }
-            //return false if user input n/N
-            if (result.equalsIgnoreCase("N")) {
-                return false;
-            }
-            System.err.println("Please input y/Y or n/N.");
-            System.out.print("Enter again: ");
         }
     }
 }

@@ -59,7 +59,7 @@ public class Fruit {
     
     @Override
     public String toString() {
-        return String.format("++Item++ | %10s\t ++Name++ | %10s\t ++Price++ %10f\t | ++Origin++ \t%20s", fruitId, fruitName, price, origin);
+        return String.format("| %-5s | %-30s | %-20.1f | %-12d | %-6s |",fruitId,fruitName,price,quantity,origin);
     }
 
 

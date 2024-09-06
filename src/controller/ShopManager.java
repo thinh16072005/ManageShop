@@ -1,15 +1,15 @@
-import java.util.ArrayList;
-import java.util.Hashtable;
+package controller;
+
 import model.Fruit;
 import model.FruitManager;
-import model.Order;
 import model.OrderManager;
 import view.Menu;
 import view.Validation;
 
 public class ShopManager extends Menu {
-    private FruitManager fruitManager;
-    private OrderManager orderManager;
+    // Create objects from FruitManager and OrderManager class:
+    private final FruitManager fruitManager = new FruitManager();
+    private final OrderManager orderManager = new OrderManager();
 
     static String[] menuOptions = {
         "Create Fruit",
@@ -35,7 +35,7 @@ public class ShopManager extends Menu {
         }
     }
 
-    private Fruit createFruit() {
+    private void createFruit() {
         // Enter fruit ID
         System.out.println("Enter fruit ID");
         String fruitId = Validation.getAndValidValue();
@@ -55,19 +55,19 @@ public class ShopManager extends Menu {
         // Enter the origin:
         System.out.println("Enter the origin: ");
         String origin = Validation.getAndValidValue();
+
         
         // Confirming creation:
         System.out.println("Do you want to create the fruit? (Y/N): ");
         String confirm = Validation.getAndValidValue();
-        
-//        if (Validation.continueConfirm(confirm)) {
-//            fruitManager.addFruit(new Fruit(fruitId, fruitName, price, quantity, origin));
-//        }
 
-        fruitManager.addFruit(new Fruit(fruitId, fruitName, price, quantity, origin));
+        if (Validation.continueConfirm(confirm)) {
+            fruitManager.addFruit(new Fruit(fruitId, fruitName, price, quantity, origin));
+        }
+
+        else return;
+
         System.out.println("Fruit created successfully!");
-        
-        return fruitManager.getFruitList().getFirst();
     }
 
     private void viewOrders() {
@@ -75,18 +75,23 @@ public class ShopManager extends Menu {
     }
 
     private void shopping() {
-        fruitManager.showFruit();
-        int fruitId = Integer.parseInt(Validation.getAndValidInt());
-        System.out.println("You chose: ");
-        int quantity = Integer.parseInt(Validation.getAndValidMoney());
-        
-        // Confirming order:
-        System.out.println("");
-        String confirm = Validation.getAndValidValue();
-        if (Validation.continueConfirm(confirm)) {
-            orderManager.addOrder();
+        if (fruitManager.getFruitList() == null) {
+            System.out.println("Fruit list is empty!");
         }
-        else { shopping(); }
+        else {
+            fruitManager.showFruit();
+            int fruitId = Integer.parseInt(Validation.getAndValidInt());
+            System.out.println("You chose: ");
+            int quantity = Integer.parseInt(Validation.getAndValidMoney());
+
+            // Confirming order:
+            System.out.println("Do you want to order now? (Y/N): ");
+            String confirm = Validation.getAndValidValue();
+            if (Validation.continueConfirm(confirm)) {
+                orderManager.addOrder();
+            }
+            else { shopping(); }
+        }
     }
     
     public static void main(String[] args) {
