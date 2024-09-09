@@ -1,10 +1,10 @@
 package model;
-import java.util.Hashtable;
+import java.util.ArrayList;
 
 import view.Validation;
 
 public class OrderManager {
-    private Hashtable<Integer, Order> listOrder;
+    private ArrayList<Order> listOrder = new ArrayList<>();
 
     FruitManager product;
     Validation val;
@@ -16,17 +16,22 @@ public class OrderManager {
     }
     
     // Add orders:
-    public void addOrder() {
-        
+    public void addOrder(Order order) {
+        listOrder.add(order);
     }
     
     //Show all orders:
     public void showAllOrder() {
-        
+        for (Order order : listOrder) {
+            order.displayOrder();
+        }
     }
 
     // Check if the product is available:
     public boolean isEnoughQuantity(FruitManager product, int id, int quantity) {
-        return true;
+        if (product.getFruitList().get(id).getQuantity() >= quantity) {
+            return true;
+        }
+        return false;
     }
 }

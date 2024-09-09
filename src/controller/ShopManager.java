@@ -1,7 +1,11 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import model.Fruit;
 import model.FruitManager;
+import model.Order;
 import model.OrderManager;
 import view.Menu;
 import view.Validation;
@@ -27,7 +31,7 @@ public class ShopManager extends Menu {
     public void execute(int ch) {
         switch (ch) {
             case 1 -> createFruit();
-            case 2 -> viewOrders();
+            case 2 -> displayListOrder();
             case 3 -> shopping();
             case 4 -> System.exit(0);
             default -> {
@@ -70,8 +74,9 @@ public class ShopManager extends Menu {
         System.out.println("Fruit created successfully!");
     }
 
-    private void viewOrders() {
-        
+
+    private void displayListOrder() {
+        orderManager.showAllOrder();
     }
 
     private void shopping() {
@@ -80,15 +85,23 @@ public class ShopManager extends Menu {
         }
         else {
             fruitManager.showFruit();
-            int fruitId = Integer.parseInt(Validation.getAndValidInt());
-            System.out.println("You chose: ");
+
+            System.out.println("Enter the fruit ID you want to buy: ");
+            String fruitId = Validation.getAndValidValue();
+
+            System.out.println("You chose: " + fruitManager.search(fruit -> fruit.getFruitId().equals(fruitId)).get(0));
+            System.out.println("Enter the quantity you want to buy: ");
             int quantity = Integer.parseInt(Validation.getAndValidMoney());
 
             // Confirming order:
             System.out.println("Do you want to order now? (Y/N): ");
             String confirm = Validation.getAndValidValue();
+
             if (Validation.continueConfirm(confirm)) {
-                orderManager.addOrder();
+                System.out.println("Enter your name: ");
+                String customer = Validation.getAndValidValue();
+                orderManager.addOrder(new Order(customer, Map.of(fruitManager.search(fruit -> fruit.getFruitId().equals(fruitId)).get(0), quantity)));
+                System.out.println("Ordered successfully!");
             }
             else { shopping(); }
         }

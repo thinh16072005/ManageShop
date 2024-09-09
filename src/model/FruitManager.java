@@ -5,15 +5,21 @@ import java.util.function.Predicate;
 public class FruitManager {
     private final ArrayList<Fruit> fruitList;
     
-    public ArrayList<Fruit> getFruitList() {return fruitList;}
+    public ArrayList<Fruit> getFruitList() {
+        return fruitList;
+    }
     
-    public FruitManager() { fruitList = new ArrayList<>(); }
+    public FruitManager() {
+        fruitList = new ArrayList<>();
+    }
 
     public boolean isEmptyProduct() {
         return fruitList.isEmpty();
     }
 
-    public void addFruit(Fruit fruit) { fruitList.add(fruit); }
+    public void addFruit(Fruit fruit) {
+        fruitList.add(fruit);
+    }
 
     public void showFruit() {
         for (Fruit fruit : fruitList) {
