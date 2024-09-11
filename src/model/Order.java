@@ -31,8 +31,7 @@ public class Order {
     public void displayOrder() {
         System.out.println("Customer: " + customer);
         System.out.println("Product | Quantity | Price | Amount");
-        int totalAmount = 0;
-        int index = 1;
+        int totalAmount = 0, index = 1;
         for (Map.Entry<Fruit, Integer> entry : order.entrySet()) {
             Fruit fruit = entry.getKey();
             int quantity = entry.getValue();

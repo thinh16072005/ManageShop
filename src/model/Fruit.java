@@ -1,6 +1,6 @@
 package model;
 public class Fruit {
-    private String fruitId;
+    private int fruitId;
     private String fruitName;
     private double price;
     private int quantity;
@@ -8,7 +8,7 @@ public class Fruit {
     
     public Fruit() {}
 
-    public Fruit(String fruitId, String fruitName, double price, int quantity, String origin) {
+    public Fruit(int fruitId, String fruitName, double price, int quantity, String origin) {
         this.fruitId = fruitId;
         this.fruitName = fruitName;
         this.price = price;
@@ -16,11 +16,11 @@ public class Fruit {
         this.origin = origin;
     }
 
-    public String getFruitId() {
+    public int getFruitId() {
         return fruitId;
     }
 
-    public void setFruitId(String fruitId) {
+    public void setFruitId(int fruitId) {
         this.fruitId = fruitId;
     }
 
@@ -59,7 +59,7 @@ public class Fruit {
     
     @Override
     public String toString() {
-        return String.format("| %-5s | %-30s | %-20.1f | %-12d | %-6s |",fruitId,fruitName,price,quantity,origin);
+        return String.format("| %-5d | %-30s | %-20.1f | %-12d | %-6s |",fruitId,fruitName,price,quantity,origin);
     }
 
 

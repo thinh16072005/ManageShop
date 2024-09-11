@@ -1,10 +1,7 @@
 package controller;
 
-import java.util.Map;
-
 import model.Fruit;
 import model.FruitManager;
-import model.Order;
 import model.OrderManager;
 import view.Menu;
 import view.Validation;
@@ -41,32 +38,33 @@ public class ShopManager extends Menu {
     private void createFruit() {
         // Enter fruit ID
         System.out.println("Enter fruit ID");
-        int fruitId = Integer.parseInt(Validation.getAndValidInt());
-        if (fruitId <= 0) System.err.println("fruitID must be larger than zero!");
+        int fruitId = Validation.getAndValidQuantityFruitId();
+        // Check if fruit ID exists:
+        if (!fruitManager.search(fruit -> fruit.getFruitId() == fruitId).isEmpty()) {
+            System.err.println("Fruit ID already exists!");
+            return;
+        }
         
         // Enter fruit name:
         System.out.println("Enter fruit name: ");
-        String fruitName = Validation.getAndValidValue();
+        String fruitName = Validation.getAndValidName();
         
         // Enter fruit price:
         System.out.println("Enter price: ");
         double price = Double.parseDouble(Validation.getAndValidMoney());
-        if (price <= 0) System.err.println("Price must be larger than zero!");
         
         // Enter quantity:
         System.out.println("Enter quantity: ");
-        int quantity = Integer.parseInt(Validation.getAndValidInt());
-        if (quantity <= 0) System.err.println("Price must be larger than zero!");
+        int quantity = Validation.getAndValidQuantityFruitId();
         
         // Enter the origin:
         System.out.println("Enter the origin: ");
-        String origin = Validation.getAndValidValue();
+        String origin = Validation.getAndValidName();
 
         
         // Confirming creation:
         System.out.println("Do you want to create the fruit? (Y/N): ");
-        String confirm = Validation.getAndValidValue();
-
+        String confirm = Validation.getAndValidName();
         if (Validation.continueConfirm(confirm)) {
             fruitManager.addFruit(new Fruit(fruitId, fruitName, price, quantity, origin));
         }
@@ -89,25 +87,33 @@ public class ShopManager extends Menu {
             fruitManager.showFruit();
 
             System.out.println("Enter the fruit ID you want to buy: ");
-            String fruitId = Validation.getAndValidValue();
+            String fruitId = Validation.getAndValidName();
 
-//            System.out.println("You chose: " + fruitManager.search(fruit -> fruit.getFruitId().equals(fruitId)).get(0));
+            // Check if fruit ID exists:
+            if (fruitManager.search(fruit -> String.valueOf(fruit.getFruitId()).equals(fruitId)).isEmpty()) {
+                System.err.println("Fruit ID not found!");
+                return;
+            } else {
+                System.out.println(fruitManager.search(fruit -> String.valueOf(fruit.getFruitId()).equals(fruitId)).get(0));
+            }
+            
             System.out.println("Enter the quantity you want to buy: ");
-            int quantity = Integer.parseInt(Validation.getAndValidMoney());
+            int quantity = Validation.getAndValidQuantityFruitId();
 
             // Confirming order:
             System.out.println("Do you want to order now? (Y/N): ");
-            String confirm = Validation.getAndValidValue();
+            String confirm = Validation.getAndValidName();
 
             if (Validation.continueConfirm(confirm)) {
                 System.out.println("Enter your name: ");
-                String customer = Validation.getAndValidValue();
-//                orderManager.addOrder(new Order(customer, Map.of(fruitManager.search(fruit -> fruit.getFruitId().equals(fruitId)).get(0), quantity)));
+                String customer = Validation.getAndValidName();
                 System.out.println("Ordered successfully!");
             }
             else { shopping(); }
         }
     }
+    
+    
     
     public static void main(String[] args) {
         ShopManager sm = new ShopManager("FRUIT SHOP SYSTEM", menuOptions);
