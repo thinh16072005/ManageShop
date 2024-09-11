@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import model.Fruit;
@@ -42,7 +41,8 @@ public class ShopManager extends Menu {
     private void createFruit() {
         // Enter fruit ID
         System.out.println("Enter fruit ID");
-        String fruitId = Validation.getAndValidValue();
+        int fruitId = Integer.parseInt(Validation.getAndValidInt());
+        if (fruitId <= 0) System.err.println("fruitID must be larger than zero!");
         
         // Enter fruit name:
         System.out.println("Enter fruit name: ");
@@ -51,10 +51,12 @@ public class ShopManager extends Menu {
         // Enter fruit price:
         System.out.println("Enter price: ");
         double price = Double.parseDouble(Validation.getAndValidMoney());
+        if (price <= 0) System.err.println("Price must be larger than zero!");
         
         // Enter quantity:
         System.out.println("Enter quantity: ");
         int quantity = Integer.parseInt(Validation.getAndValidInt());
+        if (quantity <= 0) System.err.println("Price must be larger than zero!");
         
         // Enter the origin:
         System.out.println("Enter the origin: ");
@@ -89,7 +91,7 @@ public class ShopManager extends Menu {
             System.out.println("Enter the fruit ID you want to buy: ");
             String fruitId = Validation.getAndValidValue();
 
-            System.out.println("You chose: " + fruitManager.search(fruit -> fruit.getFruitId().equals(fruitId)).get(0));
+//            System.out.println("You chose: " + fruitManager.search(fruit -> fruit.getFruitId().equals(fruitId)).get(0));
             System.out.println("Enter the quantity you want to buy: ");
             int quantity = Integer.parseInt(Validation.getAndValidMoney());
 
@@ -100,7 +102,7 @@ public class ShopManager extends Menu {
             if (Validation.continueConfirm(confirm)) {
                 System.out.println("Enter your name: ");
                 String customer = Validation.getAndValidValue();
-                orderManager.addOrder(new Order(customer, Map.of(fruitManager.search(fruit -> fruit.getFruitId().equals(fruitId)).get(0), quantity)));
+//                orderManager.addOrder(new Order(customer, Map.of(fruitManager.search(fruit -> fruit.getFruitId().equals(fruitId)).get(0), quantity)));
                 System.out.println("Ordered successfully!");
             }
             else { shopping(); }
