@@ -1,7 +1,11 @@
 package controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import model.Fruit;
 import model.FruitManager;
+import model.Order;
 import model.OrderManager;
 import view.Menu;
 import view.Validation;
@@ -76,29 +80,37 @@ public class ShopManager extends Menu {
 
 
     private void displayListOrder() {
+        if (orderManager.getOrderList().isEmpty()) {
+            System.err.println("Orders not available!");
+        }
         orderManager.showAllOrder();
     }
 
     private void shopping() {
-        if (fruitManager.getFruitList() == null) {
-            System.out.println("Fruit list is empty!");
+        if (fruitManager.getFruitList().isEmpty()) {
+            System.err.println("Fruits not available!");
         }
         else {
             fruitManager.showFruit();
 
             System.out.println("Enter the fruit ID you want to buy: ");
-            String fruitId = Validation.getAndValidName();
-
+            int fruitId = Validation.getAndValidQuantityFruitId();
             // Check if fruit ID exists:
-            if (fruitManager.search(fruit -> String.valueOf(fruit.getFruitId()).equals(fruitId)).isEmpty()) {
+            if (fruitManager.search(fruit -> Integer.valueOf(fruit.getFruitId()).equals(fruitId)).isEmpty()) {
                 System.err.println("Fruit ID not found!");
                 return;
             } else {
-                System.out.println(fruitManager.search(fruit -> String.valueOf(fruit.getFruitId()).equals(fruitId)).get(0));
+                System.out.println(fruitManager.search(fruit -> Integer.valueOf(fruit.getFruitId()).equals(fruitId)).get(0));
             }
             
             System.out.println("Enter the quantity you want to buy: ");
             int quantity = Validation.getAndValidQuantityFruitId();
+            
+            // Check if quantity exceeds the available quantity:
+            if (fruitManager.search(fruit -> Integer.valueOf(fruit.getFruitId()).equals(fruitId)).get(0).getQuantity() < quantity) {
+                System.err.println("The quantity exceeds the available quantity!");
+                return;
+            }
 
             // Confirming order:
             System.out.println("Do you want to order now? (Y/N): ");
@@ -107,9 +119,14 @@ public class ShopManager extends Menu {
             if (Validation.continueConfirm(confirm)) {
                 System.out.println("Enter your name: ");
                 String customer = Validation.getAndValidName();
+                // Add order:
+                Map<Fruit, Integer> orderItems = new HashMap<>();
+                orderItems.put(fruitManager.search(fruit -> Integer.valueOf(fruit.getFruitId()).equals(fruitId)).get(0), quantity);
+                orderManager.addOrder(new Order(customer, orderItems));
                 System.out.println("Ordered successfully!");
+                // When customer finished shopping, quantity will be updated:
+                orderManager.updateQuantity();
             }
-            else { shopping(); }
         }
     }
     

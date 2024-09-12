@@ -42,21 +42,20 @@ public class Validation {
     public static int getAndValidQuantityFruitId() {
         // loop until user input correct
         while (true) {
-            while (true) {
-                try {
-                    int result = Integer.parseInt(sc.nextLine().trim());
-                    if (result <= 0) {
-                        System.err.println("Number must be larger than zero!");
-                    } else {
-                        return result;
-                    }
-                } catch (NumberFormatException e) {
-                    System.err.println("Must be input integer.");
-                    System.out.print("Enter again: ");
+            try {
+                int result = Integer.parseInt(sc.nextLine().trim());
+                if (result <= 0) {
+                    System.err.println("Number must be larger than zero!");
+                } else {
+                    return result;
                 }
+            } catch (NumberFormatException e) {
+                System.err.println("Must be input integer.");
+                System.out.print("Enter again: ");
             }
         }
     }
+
 
     public static String getAndValidateOrigin() {
         while (true) {
@@ -71,29 +70,18 @@ public class Validation {
         }
     }
 
-    // public static boolean checkID(ArrayList<Fruit> fr, String id) {
-    // for (Fruit fruit : fr) {
-    // if (id.equalsIgnoreCase(fruit.getFruitId())) {
-    // return false;
-    // }
-    // }
-    // return true;
-    // }
-
-   
-
     public static boolean continueConfirm(String msg) {
         while (true) {
-            //return true if user input y/Y
             if (msg.equalsIgnoreCase("Y")) {
                 return true;
-            }
-            //return false if user input n/N
-            if (msg.equalsIgnoreCase("N")) {
+            } else if (msg.equalsIgnoreCase("N")) {
                 return false;
+            } else {
+                System.err.println("Please input Y/y or N/n.");
+                System.out.print("Enter again: ");
+                msg = sc.nextLine().trim();
             }
-            System.err.println("Please input y/Y or n/N.");
-            System.out.print("Enter again: ");
         }
     }
+    
 }

@@ -1,18 +1,19 @@
 package model;
 import java.util.ArrayList;
 
-import view.Validation;
-
 public class OrderManager {
     private ArrayList<Order> listOrder = new ArrayList<>();
 
     FruitManager product;
-    Validation val;
     
     public OrderManager() {}
 
     public OrderManager(FruitManager product) {
         this.product = product;
+    }
+    
+    public ArrayList<Order> getOrderList() {
+        return listOrder;
     }
     
     // Add orders:
@@ -27,11 +28,13 @@ public class OrderManager {
         }
     }
 
-    // Check if the product is available:
-    public boolean isEnoughQuantity(FruitManager product, int id, int quantity) {
-        if (product.getFruitList().get(id).getQuantity() >= quantity) {
-            return true;
+    public void updateQuantity() {
+        // Update the quantity of the product when the customer buys:
+        for (Order order : listOrder) {
+            for (Fruit fruit : order.getOrder().keySet()) {
+                int quantity = order.getOrder().get(fruit);
+                fruit.setQuantity(fruit.getQuantity() - quantity);
+            }
         }
-        return false;
     }
 }
